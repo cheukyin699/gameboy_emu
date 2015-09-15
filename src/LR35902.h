@@ -65,6 +65,10 @@ class LR35902 {
         // Some complex operations prefixed with CB that need
         // to be performed quite a lot of times
         inline void SWAP(byte&);
+        inline void RLC(byte&);
+        inline void RL(byte&);
+        inline void RRC(byte&);
+        inline void RR(byte&);
 
         // This huge function mimics the execCurr() function, only that this is
         // tailored for all commands prefixed with 0xcb.

@@ -15,6 +15,134 @@ LR35902::LR35902(Memory *m) {
 
 void LR35902::execCB(byte code) {
     switch (code) {
+        case 0x00:
+            // RLC B
+            RLC(bc.hi);
+            break;
+        case 0x01:
+            // RLC C
+            RLC(bc.hi);
+            break;
+        case 0x02:
+            // RLC D
+            RLC(de.hi);
+            break;
+        case 0x03:
+            // RLC E
+            RLC(de.lo);
+            break;
+        case 0x04:
+            // RLC H
+            RLC(hl.hi);
+            break;
+        case 0x05:
+            // RLC L
+            RLC(hl.lo);
+            break;
+        case 0x06:
+            // RLC (HL)
+            RLC(mem->raw[hl.val]);
+            break;
+        case 0x07:
+            // RLC A
+            RLC(af.hi);
+            break;
+        case 0x08:
+            // RRC B
+            RRC(bc.hi);
+            break;
+        case 0x09:
+            // RRC C
+            RRC(bc.lo);
+            break;
+        case 0x0a:
+            // RRC D
+            RRC(de.hi);
+            break;
+        case 0x0b:
+            // RRC E
+            RRC(de.lo);
+            break;
+        case 0x0c:
+            // RRC H
+            RRC(hl.hi);
+            break;
+        case 0x0d:
+            // RRC L
+            RRC(hl.lo);
+            break;
+        case 0x0e:
+            // RRC (HL)
+            RRC(mem->raw[hl.val]);
+            break;
+        case 0x0f:
+            // RRC A
+            RRC(af.hi);
+            break;
+        case 0x10:
+            // RL B
+            RL(bc.hi);
+            break;
+        case 0x11:
+            // RL C
+            RL(bc.hi);
+            break;
+        case 0x12:
+            // RL D
+            RL(de.hi);
+            break;
+        case 0x13:
+            // RL E
+            RL(de.lo);
+            break;
+        case 0x14:
+            // RL H
+            RL(hl.hi);
+            break;
+        case 0x15:
+            // RL L
+            RL(hl.lo);
+            break;
+        case 0x16:
+            // RL (HL)
+            RL(mem->raw[hl.val]);
+            break;
+        case 0x17:
+            // RL A
+            RL(af.hi);
+            break;
+        case 0x18:
+            // RR B
+            RR(bc.hi);
+            break;
+        case 0x19:
+            // RR C
+            RR(bc.lo);
+            break;
+        case 0x1a:
+            // RR D
+            RR(de.hi);
+            break;
+        case 0x1b:
+            // RR E
+            RR(de.lo);
+            break;
+        case 0x1c:
+            // RR H
+            RR(hl.hi);
+            break;
+        case 0x1d:
+            // RR L
+            RR(hl.lo);
+            break;
+        case 0x1e:
+            // RR (HL)
+            RR(mem->raw[hl.val]);
+            break;
+        case 0x1f:
+            // RR A
+            RR(af.hi);
+            break;
         case 0x30:
             // SWAP B
             SWAP(bc.hi);
@@ -91,6 +219,10 @@ int LR35902::execCurr() {
             // LD B, n
             bc.hi = args[0];
             break;
+        case 0x07:
+            // RLCA
+            RLC(af.hi);
+            break;
         case 0x08:
             // LD (nn), SP
             mem->raw[wargs[0]] = sp;
@@ -122,6 +254,10 @@ int LR35902::execCurr() {
         case 0x0e:
             // LD C, n
             bc.lo = args[0];
+            break;
+        case 0x0f:
+            // RRCA
+            RRC(af.hi);
             break;
         case 0x10:
             if (args[0] == 0) {
@@ -161,6 +297,10 @@ int LR35902::execCurr() {
             // LD D, n
             de.hi = args[0];
             break;
+        case 0x17:
+            // RLA
+            RL(af.hi);
+            break;
         case 0x18:
             // JR n
             pc += args[0];
@@ -192,6 +332,10 @@ int LR35902::execCurr() {
         case 0x1e:
             // LD E, n
             de.lo = args[0];
+            break;
+        case 0x1f:
+            // RRA
+            RR(af.hi);
             break;
         case 0x20:
             // JR NZ, n
@@ -1159,6 +1303,11 @@ int LR35902::execCurr() {
             // LD A, ($FF00+C)
             af.hi = mem->raw[bc.lo+0xff00];
             break;
+        case 0xf3:
+            // DI
+            // Disable interrupts
+            // TODO
+            break;
         case 0xf5:
             // PUSH AF
             mem->raw[sp-1] = af.hi;
@@ -1194,6 +1343,11 @@ int LR35902::execCurr() {
         case 0xfa:
             // LD A, (nn)
             af.hi = mem->raw[wargs[0]];
+            break;
+        case 0xfb:
+            // EI
+            // Enable interrupts
+            // TODO
             break;
         case 0xff:
             // RST 0x38
@@ -1285,4 +1439,44 @@ inline void LR35902::SWAP(byte &b) {
     resetN();
     resetH();
     resetC();
+}
+
+inline void LR35902::RLC(byte &b) {
+    if (b&0x80) setC();
+    else        resetC();
+    b <<= 1;
+    if (b == 0) setZ();
+    resetN();
+    resetH();
+}
+
+inline void LR35902::RL(byte &b) {
+    bool cvar = getFlag(CFLAG);
+    if (b&0x80) setC();
+    else            resetC();
+    b <<= 1;
+    b |= cvar;
+    if (b == 0) setZ();
+    resetN();
+    resetH();
+}
+
+inline void LR35902::RRC(byte &b) {
+    if (b&0x1)  setC();
+    else            resetC();
+    b >>= 1;
+    if (b == 0) setZ();
+    resetN();
+    resetH();
+}
+
+inline void LR35902::RR(byte &b) {
+    bool cvar = getFlag(CFLAG);
+    if (af.hi&0x1)  setC();
+    else            resetC();
+    af.hi <<= 1;
+    af.hi |= cvar;
+    if (af.hi == 0) setZ();
+    resetN();
+    resetH();
 }
