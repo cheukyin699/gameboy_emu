@@ -13,6 +13,43 @@ LR35902::LR35902(Memory *m) {
     hl.val = 0x14d;
 }
 
+void LR35902::execCB(byte code) {
+    switch (code) {
+        case 0x30:
+            // SWAP B
+            SWAP(bc.hi);
+            break;
+        case 0x31:
+            // SWAP C
+            SWAP(bc.lo);
+            break;
+        case 0x32:
+            // SWAP D
+            SWAP(de.hi);
+            break;
+        case 0x33:
+            // SWAP E
+            SWAP(de.lo);
+            break;
+        case 0x34:
+            // SWAP H
+            SWAP(hl.hi);
+            break;
+        case 0x35:
+            // SWAP L
+            SWAP(hl.lo);
+            break;
+        case 0x36:
+            // SWAP (HL)
+            SWAP(mem->raw[hl.val]);
+            break;
+        case 0x37:
+            // SWAP A
+            SWAP(af.hi);
+            break;
+    }
+}
+
 int LR35902::execCurr() {
     byte opcode = mem->raw[pc];
     byte *args = &mem->raw[pc+1];
@@ -85,6 +122,16 @@ int LR35902::execCurr() {
         case 0x0e:
             // LD C, n
             bc.lo = args[0];
+            break;
+        case 0x10:
+            if (args[0] == 0) {
+                // STOP
+                // TODO
+                // Halts CPU & Display until a button is pressed.
+            }
+            else {
+                // Invalid (or something)
+            }
             break;
         case 0x11:
             // LD DE, nn
@@ -185,9 +232,15 @@ int LR35902::execCurr() {
             break;
         case 0x27:
             // DAA
-            // TODO
             if (af.hi == 0) setZ();
             resetH();
+            {
+                byte hi = af.hi / 10;
+                byte lo = af.hi % 10;
+                byte t = (hi << 4) | lo;
+                if (t == af.hi) resetC();
+                else            setC();
+            }
             break;
         case 0x28:
             // JR Z, n
@@ -264,6 +317,12 @@ int LR35902::execCurr() {
             setN();
             if (int(mem->raw[hl.val]&0xf)-1 < ((--mem->raw[hl.val])&0xf)) setH();
             if (mem->raw[hl.val] == 0) setZ();
+            break;
+        case 0x37:
+            // SCF
+            resetN();
+            resetH();
+            setC();
             break;
         case 0x38:
             // JR C, n
@@ -526,8 +585,9 @@ int LR35902::execCurr() {
             mem->raw[hl.val] = hl.lo;
             break;
         case 0x76:
-            // LD (HL), n
-            mem->raw[hl.val] = args[0];
+            // HALT
+            // Waits until an interrupt occurs.
+            // TODO
             break;
         case 0x77:
             // LD (HL), A
@@ -904,6 +964,12 @@ int LR35902::execCurr() {
             if (getFlag(ZFLAG))
                 pc = wargs[0];
             break;
+        case 0xcb:
+            // Extra commands with prefix "CB"
+            // Doesn't use lookup - the cycles are too similar.
+            cycles = LR35902_cbopcycles(args[0]);
+            execCB(args[0]);
+            break;
         case 0xcc:
             {
                 // CALL Z, nn
@@ -1208,4 +1274,15 @@ inline void LR35902::ADD_SP(byte b) {
     else resetC();
     if (int((org&0xfff)+(b&0xfff)) > (sp&0xfff)) setH();
     else resetH();
+}
+
+inline void LR35902::SWAP(byte &b) {
+    byte t = b;     // temp
+    b <<= 4;
+    b |= (t >> 4);
+
+    if (b == 0) setZ();
+    resetN();
+    resetH();
+    resetC();
 }
