@@ -8,21 +8,21 @@
 const int MaxCycles = 69905;
 
 class Emulator {
-    private:
-        byte cartridge[0x200000];
-        LR35902 *cpu;
-        Memory *mem;
+private:
+	byte cartridge[0x200000];
+	LR35902 *cpu;
+	Memory *mem;
 
-    public:
-        Emulator();
+public:
+	Emulator();
 
-        /* Initializes the ROM memory from file(name).
-         * If it cannot open the file, it returns false.
-         * Otherwise, it returns true.
-         */
-        bool initRom(const char*);
+	/* Initializes the ROM memory from file(name).
+	 * If it cannot open the file, it returns false.
+	 * Otherwise, it returns true.
+	 */
+	bool initRom(const char*);
 
-        void update();
+	void update();
 };
 
 #endif

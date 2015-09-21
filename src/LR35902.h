@@ -16,76 +16,76 @@
 #define CFLAG   0x10
 
 union word_w {
-    word val;
-    struct {
-        #ifndef BIG_ENDIAN
-        byte hi, lo;        // Little endian
-        #else
-        byte lo, hi;        // Big endian
-        #endif
-    };
+	word val;
+	struct {
+		#ifndef BIG_ENDIAN
+		byte hi, lo;		// Little endian
+		#else
+		byte lo, hi;		// Big endian
+		#endif
+	};
 };
 
 typedef word_w Register;
 
 class LR35902 {
-    private:
-        // A pointer to the memory
-        Memory *mem;
-        // Some registers
-        Register af;        // A and F
-        Register bc;        // B and C
-        Register de;        // D and E
-        Register hl;        // H and L
-        word sp;            // Stack pointer that grows downwards in memory
-        word pc;            // Program counter (instruction pointer)
+private:
+	// A pointer to the memory
+	Memory *mem;
+	// Some registers
+	Register af;		// A and F
+	Register bc;		// B and C
+	Register de;		// D and E
+	Register hl;		// H and L
+	word sp;		// Stack pointer that grows downwards in memory
+	word pc;		// Program counter (instruction pointer)
 
-        // Some flag setters and resetters
-        inline void setZ() {af.lo |= ZFLAG;}    // Sets the zero flag
-        inline void setN() {af.lo |= NFLAG;}    // Sets the subtract flag
-        inline void setH() {af.lo |= HFLAG;}    // Sets the half carry flag
-        inline void setC() {af.lo |= CFLAG;}    // Sets the carry flag
-        inline void resetZ() {af.lo &= ~ZFLAG;} // Resets the zero flag
-        inline void resetN() {af.lo &= ~NFLAG;} // Resets the subtract flag
-        inline void resetH() {af.lo &= ~HFLAG;} // Resets the half carry flag
-        inline void resetC() {af.lo &= ~CFLAG;} // Resets the carry flag
-        inline bool getFlag(byte mask) {return ((af.lo & mask) != 0? true:false);}
+	// Some flag setters and resetters
+	inline void setZ() {af.lo |= ZFLAG;}	// Sets the zero flag
+	inline void setN() {af.lo |= NFLAG;}	// Sets the subtract flag
+	inline void setH() {af.lo |= HFLAG;}	// Sets the half carry flag
+	inline void setC() {af.lo |= CFLAG;}	// Sets the carry flag
+	inline void resetZ() {af.lo &= ~ZFLAG;} // Resets the zero flag
+	inline void resetN() {af.lo &= ~NFLAG;} // Resets the subtract flag
+	inline void resetH() {af.lo &= ~HFLAG;} // Resets the half carry flag
+	inline void resetC() {af.lo &= ~CFLAG;} // Resets the carry flag
+	inline bool getFlag(byte mask) {return ((af.lo & mask) != 0? true:false);}
 
-        // Some complex operations that need to
-        // be performed quite a lot of times
-        inline void ADD_A(byte);
-        inline void ADD_HL(word);
-        inline void ADD_SP(byte);
-        inline void SUB_A(byte);
-        inline void AND_A(byte);
-        inline void OR_A(byte);
-        inline void XOR_A(byte);
-        inline void CP_A(byte);
+	// Some complex operations that need to
+	// be performed quite a lot of times
+	inline void ADD_A(byte);
+	inline void ADD_HL(word);
+	inline void ADD_SP(byte);
+	inline void SUB_A(byte);
+	inline void AND_A(byte);
+	inline void OR_A(byte);
+	inline void XOR_A(byte);
+	inline void CP_A(byte);
 
-        // Some complex operations prefixed with CB that need
-        // to be performed quite a lot of times
-        inline void SWAP(byte&);
-        inline void RLC(byte&);
-        inline void RL(byte&);
-        inline void RRC(byte&);
-        inline void RR(byte&);
+	// Some complex operations prefixed with CB that need
+	// to be performed quite a lot of times
+	inline void SWAP(byte&);
+	inline void RLC(byte&);
+	inline void RL(byte&);
+	inline void RRC(byte&);
+	inline void RR(byte&);
 
-        // This huge function mimics the execCurr() function, only that this is
-        // tailored for all commands prefixed with 0xcb.
-        void execCB(byte);
+	// This huge function mimics the execCurr() function, only that this is
+	// tailored for all commands prefixed with 0xcb.
+	void execCB(byte);
 
-    public:
-        LR35902(Memory*);
+public:
+	LR35902(Memory*);
 
-        /* Executes the current command (the one pointed with the PC).
-         * Returns the number of cycles the command has to undergo.
-         */
-        int execCurr();
+	/* Executes the current command (the one pointed with the PC).
+	 * Returns the number of cycles the command has to undergo.
+	 */
+	int execCurr();
 
-        /* Some functions for easier debugging */
+	/* Some functions for easier debugging */
 
-        /* Gets the Program Counter */
-        word getPC() {return pc;}
+	/* Gets the Program Counter */
+	word getPC() {return pc;}
 };
 
 /* The entries with 0 in them are entries that are determined at runtime,
@@ -117,13 +117,13 @@ static int LR35902_opcycles[] =
 // 0   1   2   3   4   5   6   7   8   9   a   b   c   d   e   f
 // 8,  8,  8,  8,  8,  8, 16,  8,  8,  8,  8,  8,  8,  8, 16,  8,  // 0x
 static inline int LR35902_cbopcycles(int opcode) {
-    switch (opcode % 16) {
-        case 0x6:
-        case 0xe:
-            return 16;
-        default:
-            return 8;
-    }
+	switch (opcode % 16) {
+	case 0x6:
+	case 0xe:
+		return 16;
+	default:
+		return 8;
+	}
 }
 
 /* A very long list of the different sizes of different opcodes.

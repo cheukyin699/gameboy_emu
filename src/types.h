@@ -7,14 +7,14 @@ typedef unsigned char byte;
 typedef unsigned short word;
 
 union word_t {
-    word val;
-    struct {
-        #ifndef BIG_ENDIAN
-        byte hi, lo;        // Little endian
-        #else
-        byte lo, hi;        // Big endian
-        #endif
-    };
+	word val;
+	struct {
+		#ifndef BIG_ENDIAN
+		byte hi, lo;		// Little endian
+		#else
+		byte lo, hi;		// Big endian
+		#endif
+	};
 };
 
 #endif
