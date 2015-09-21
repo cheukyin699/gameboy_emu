@@ -143,6 +143,70 @@ void LR35902::execCB(byte code) {
 		// RR A
 		RR(af.hi);
 		break;
+	case 0x20:
+		// SLA B
+		SLA(bc.hi);
+		break;
+	case 0x21:
+		// SLA C
+		SLA(bc.hi);
+		break;
+	case 0x22:
+		// SLA D
+		SLA(de.hi);
+		break;
+	case 0x23:
+		// SLA E
+		SLA(de.lo);
+		break;
+	case 0x24:
+		// SLA H
+		SLA(hl.hi);
+		break;
+	case 0x25:
+		// SLA L
+		SLA(hl.lo);
+		break;
+	case 0x26:
+		// SLA (HL)
+		SLA(mem->raw[hl.val]);
+		break;
+	case 0x27:
+		// SLA A
+		SLA(af.hi);
+		break;
+	case 0x28:
+		// SRA B
+		SRA(bc.hi);
+		break;
+	case 0x29:
+		// SRA C
+		SRA(bc.lo);
+		break;
+	case 0x2a:
+		// SRA D
+		SRA(de.hi);
+		break;
+	case 0x2b:
+		// SRA E
+		SRA(de.lo);
+		break;
+	case 0x2c:
+		// SRA H
+		SRA(hl.hi);
+		break;
+	case 0x2d:
+		// SRA L
+		SRA(hl.lo);
+		break;
+	case 0x2e:
+		// SRA (HL)
+		SRA(mem->raw[hl.val]);
+		break;
+	case 0x2f:
+		// SRA A
+		SRA(af.hi);
+		break;
 	case 0x30:
 		// SWAP B
 		SWAP(bc.hi);
@@ -174,6 +238,38 @@ void LR35902::execCB(byte code) {
 	case 0x37:
 		// SWAP A
 		SWAP(af.hi);
+		break;
+	case 0x38:
+		// SRL B
+		SRL(bc.hi);
+		break;
+	case 0x39:
+		// SRL C
+		SRL(bc.lo);
+		break;
+	case 0x3a:
+		// SRL D
+		SRL(de.hi);
+		break;
+	case 0x3b:
+		// SRL E
+		SRL(de.lo);
+		break;
+	case 0x3c:
+		// SRL H
+		SRL(hl.hi);
+		break;
+	case 0x3d:
+		// SRL L
+		SRL(hl.lo);
+		break;
+	case 0x3e:
+		// SRL (HL)
+		SRL(mem->raw[hl.val]);
+		break;
+	case 0x3f:
+		// SRL A
+		SRL(af.hi);
 		break;
 	}
 }
@@ -1477,6 +1573,35 @@ void LR35902::RR(byte &b) {
 	af.hi <<= 1;
 	af.hi |= cvar;
 	if (af.hi == 0) setZ();
+	resetN();
+	resetH();
+}
+
+void LR35902::SLA(byte &b) {
+	if (b&0x80) setC();
+	else resetC();
+	b <<= 1;
+	if (b == 0) setZ();
+	resetN();
+	resetH();
+}
+
+void LR35902::SRA(byte &b) {
+	bool msb = b&0x80;
+	if (b&0x1) setC();
+	else resetC();
+	b >>= 1;
+	b |= msb;
+	if (b == 0) setZ();
+	resetN();
+	resetH();
+}
+
+void LR35902::SRL(byte &b) {
+	if (b&0x1) setC();
+	else resetC();
+	b >>= 1;
+	if (b == 0) setZ();
 	resetN();
 	resetH();
 }
