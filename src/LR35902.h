@@ -53,22 +53,25 @@ private:
 
 	// Some complex operations that need to
 	// be performed quite a lot of times
-	inline void ADD_A(byte);
-	inline void ADD_HL(word);
-	inline void ADD_SP(byte);
-	inline void SUB_A(byte);
-	inline void AND_A(byte);
-	inline void OR_A(byte);
-	inline void XOR_A(byte);
-	inline void CP_A(byte);
+	void ADD_A(byte);
+	void ADD_HL(word);
+	void ADD_SP(byte);
+	void SUB_A(byte);
+	void AND_A(byte);
+	void OR_A(byte);
+	void XOR_A(byte);
+	void CP_A(byte);
 
 	// Some complex operations prefixed with CB that need
 	// to be performed quite a lot of times
-	inline void SWAP(byte&);
-	inline void RLC(byte&);
-	inline void RL(byte&);
-	inline void RRC(byte&);
-	inline void RR(byte&);
+	void SWAP(byte&);
+	void RLC(byte&);
+	void RL(byte&);
+	void RRC(byte&);
+	void RR(byte&);
+	void SLA(byte&);
+	void SRA(byte&);
+	void SRL(byte&);
 
 	// This huge function mimics the execCurr() function, only that this is
 	// tailored for all commands prefixed with 0xcb.

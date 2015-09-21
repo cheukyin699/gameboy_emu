@@ -1357,7 +1357,7 @@ int LR35902::execCurr() {
 	return cycles;
 }
 
-inline void LR35902::ADD_A(byte b) {
+void LR35902::ADD_A(byte b) {
 	int temp = af.hi + b;
 	byte org = af.hi;
 	af.hi += b;
@@ -1367,7 +1367,7 @@ inline void LR35902::ADD_A(byte b) {
 	if (int((org&0xf)+(b&0xf)) > (af.hi&0xf)) setH();
 }
 
-inline void LR35902::SUB_A(byte b) {
+void LR35902::SUB_A(byte b) {
 	int temp = af.hi - b;
 	byte org = af.hi;
 	af.hi -= b;
@@ -1377,7 +1377,7 @@ inline void LR35902::SUB_A(byte b) {
 	if ((org&0xf) < (b&0xf)) setH();
 }
 
-inline void LR35902::AND_A(byte b) {
+void LR35902::AND_A(byte b) {
 	af.hi &= b;
 	resetN();
 	setH();
@@ -1385,7 +1385,7 @@ inline void LR35902::AND_A(byte b) {
 	if (af.hi == 0) setZ();
 }
 
-inline void LR35902::OR_A(byte b) {
+void LR35902::OR_A(byte b) {
 	af.hi |= b;
 	resetN();
 	resetH();
@@ -1393,7 +1393,7 @@ inline void LR35902::OR_A(byte b) {
 	if (af.hi == 0) setZ();
 }
 
-inline void LR35902::XOR_A(byte b) {
+void LR35902::XOR_A(byte b) {
 	af.hi ^= b;
 	resetN();
 	resetH();
@@ -1401,7 +1401,7 @@ inline void LR35902::XOR_A(byte b) {
 	if (af.hi == 0) setZ();
 }
 
-inline void LR35902::CP_A(byte b) {
+void LR35902::CP_A(byte b) {
 	int res = af.hi - b;
 	if (res == 0) setZ();
 	setN();
@@ -1409,7 +1409,7 @@ inline void LR35902::CP_A(byte b) {
 	if ((af.hi&0xf) < (b&0xf)) setH();
 }
 
-inline void LR35902::ADD_HL(word w) {
+void LR35902::ADD_HL(word w) {
 	int temp = hl.val + w;
 	word org = hl.val;
 	hl.val += w;
@@ -1418,7 +1418,7 @@ inline void LR35902::ADD_HL(word w) {
 	if (int((org&0xfff)+(w&0xfff)) > (hl.val&0xfff)) setH();
 }
 
-inline void LR35902::ADD_SP(byte b) {
+void LR35902::ADD_SP(byte b) {
 	int temp = sp + b;
 	byte org = sp;
 	sp += b;
@@ -1430,7 +1430,7 @@ inline void LR35902::ADD_SP(byte b) {
 	else resetH();
 }
 
-inline void LR35902::SWAP(byte &b) {
+void LR35902::SWAP(byte &b) {
 	byte t = b;	 // temp
 	b <<= 4;
 	b |= (t >> 4);
@@ -1441,7 +1441,7 @@ inline void LR35902::SWAP(byte &b) {
 	resetC();
 }
 
-inline void LR35902::RLC(byte &b) {
+void LR35902::RLC(byte &b) {
 	if (b&0x80) setC();
 	else resetC();
 	b <<= 1;
@@ -1450,7 +1450,7 @@ inline void LR35902::RLC(byte &b) {
 	resetH();
 }
 
-inline void LR35902::RL(byte &b) {
+void LR35902::RL(byte &b) {
 	bool cvar = getFlag(CFLAG);
 	if (b&0x80) setC();
 	else resetC();
@@ -1461,7 +1461,7 @@ inline void LR35902::RL(byte &b) {
 	resetH();
 }
 
-inline void LR35902::RRC(byte &b) {
+void LR35902::RRC(byte &b) {
 	if (b&0x1)  setC();
 	else resetC();
 	b >>= 1;
@@ -1470,7 +1470,7 @@ inline void LR35902::RRC(byte &b) {
 	resetH();
 }
 
-inline void LR35902::RR(byte &b) {
+void LR35902::RR(byte &b) {
 	bool cvar = getFlag(CFLAG);
 	if (af.hi&0x1)  setC();
 	else resetC();
