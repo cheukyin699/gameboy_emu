@@ -1556,6 +1556,7 @@ void LR35902::RLC(byte &b) {
 	if (b&0x80) setC();
 	else resetC();
 	b <<= 1;
+	b |= getFlag(CFLAG);
 	if (b == 0) setZ();
 	resetN();
 	resetH();
@@ -1576,6 +1577,7 @@ void LR35902::RRC(byte &b) {
 	if (b&0x1)  setC();
 	else resetC();
 	b >>= 1;
+	b |= getFlag(CFLAG);
 	if (b == 0) setZ();
 	resetN();
 	resetH();
