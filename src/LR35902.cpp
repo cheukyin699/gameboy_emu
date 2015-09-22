@@ -286,6 +286,262 @@ void LR35902::execCB(byte code) {
 		// SRL A
 		SRL(af.hi);
 		break;
+	case 0x40:
+		// BIT 0, B
+		BIT(0, bc.hi);
+		break;
+	case 0x41:
+		// BIT 0, C
+		BIT(0, bc.lo);
+		break;
+	case 0x42:
+		// BIT 0, D
+		BIT(0, de.hi);
+		break;
+	case 0x43:
+		// BIT 0, E
+		BIT(0, de.lo);
+		break;
+	case 0x44:
+		// BIT 0, H
+		BIT(0, hl.hi);
+		break;
+	case 0x45:
+		// BIT 0, L
+		BIT(0, hl.lo);
+		break;
+	case 0x46:
+		// BIT 0, (HL)
+		BIT(0, mem->raw[hl.val]);
+		break;
+	case 0x47:
+		// BIT 0, A
+		BIT(0, af.hi);
+		break;
+	case 0x48:
+		// BIT 1, B
+		BIT(1, bc.hi);
+		break;
+	case 0x49:
+		// BIT 1, C
+		BIT(1, bc.lo);
+		break;
+	case 0x4a:
+		// BIT 1, D
+		BIT(1, de.hi);
+		break;
+	case 0x4b:
+		// BIT 1, E
+		BIT(1, de.lo);
+		break;
+	case 0x4c:
+		// BIT 1, H
+		BIT(1, hl.hi);
+		break;
+	case 0x4d:
+		// BIT 1, L
+		BIT(1, hl.lo);
+		break;
+	case 0x4e:
+		// BIT 1, (HL)
+		BIT(1, mem->raw[hl.val]);
+		break;
+	case 0x4f:
+		// BIT 1, A
+		BIT(1, af.hi);
+		break;
+	case 0x50:
+		// BIT 2, B
+		BIT(2, bc.hi);
+		break;
+	case 0x51:
+		// BIT 2, C
+		BIT(2, bc.lo);
+		break;
+	case 0x52:
+		// BIT 2, D
+		BIT(2, de.hi);
+		break;
+	case 0x53:
+		// BIT 2, E
+		BIT(2, de.lo);
+		break;
+	case 0x54:
+		// BIT 2, H
+		BIT(2, hl.hi);
+		break;
+	case 0x55:
+		// BIT 2, L
+		BIT(2, hl.lo);
+		break;
+	case 0x56:
+		// BIT 2, (HL)
+		BIT(2, mem->raw[hl.val]);
+		break;
+	case 0x57:
+		// BIT 2, A
+		BIT(2, af.hi);
+		break;
+	case 0x58:
+		// BIT 3, B
+		BIT(3, bc.hi);
+		break;
+	case 0x59:
+		// BIT 3, C
+		BIT(3, bc.lo);
+		break;
+	case 0x5a:
+		// BIT 3, D
+		BIT(3, de.hi);
+		break;
+	case 0x5b:
+		// BIT 3, E
+		BIT(3, de.lo);
+		break;
+	case 0x5c:
+		// BIT 3, H
+		BIT(3, hl.hi);
+		break;
+	case 0x5d:
+		// BIT 3, L
+		BIT(3, hl.lo);
+		break;
+	case 0x5e:
+		// BIT 3, (HL)
+		BIT(3, mem->raw[hl.val]);
+		break;
+	case 0x5f:
+		// BIT 3, A
+		BIT(3, af.hi);
+		break;
+	case 0x60:
+		// BIT 4, B
+		BIT(4, bc.hi);
+		break;
+	case 0x61:
+		// BIT 4, C
+		BIT(4, bc.lo);
+		break;
+	case 0x62:
+		// BIT 4, D
+		BIT(4, de.hi);
+		break;
+	case 0x63:
+		// BIT 4, E
+		BIT(4, de.lo);
+		break;
+	case 0x64:
+		// BIT 4, H
+		BIT(4, hl.hi);
+		break;
+	case 0x65:
+		// BIT 4, L
+		BIT(4, hl.lo);
+		break;
+	case 0x66:
+		// BIT 4, (HL)
+		BIT(4, mem->raw[hl.val]);
+		break;
+	case 0x67:
+		// BIT 4, A
+		BIT(4, af.hi);
+		break;
+	case 0x68:
+		// BIT 5, B
+		BIT(5, bc.hi);
+		break;
+	case 0x69:
+		// BIT 5, C
+		BIT(5, bc.lo);
+		break;
+	case 0x6a:
+		// BIT 5, D
+		BIT(5, de.hi);
+		break;
+	case 0x6b:
+		// BIT 5, E
+		BIT(5, de.lo);
+		break;
+	case 0x6c:
+		// BIT 5, H
+		BIT(5, hl.hi);
+		break;
+	case 0x6d:
+		// BIT 5, L
+		BIT(5, hl.lo);
+		break;
+	case 0x6e:
+		// BIT 5, (HL)
+		BIT(5, mem->raw[hl.val]);
+		break;
+	case 0x6f:
+		// BIT 5, A
+		BIT(5, af.hi);
+		break;
+	case 0x70:
+		// BIT 6, B
+		BIT(6, bc.hi);
+		break;
+	case 0x71:
+		// BIT 6, C
+		BIT(6, bc.lo);
+		break;
+	case 0x72:
+		// BIT 6, D
+		BIT(6, de.hi);
+		break;
+	case 0x73:
+		// BIT 6, E
+		BIT(6, de.lo);
+		break;
+	case 0x74:
+		// BIT 6, H
+		BIT(6, hl.hi);
+		break;
+	case 0x75:
+		// BIT 6, L
+		BIT(6, hl.lo);
+		break;
+	case 0x76:
+		// BIT 6, (HL)
+		BIT(6, mem->raw[hl.val]);
+		break;
+	case 0x77:
+		// BIT 6, A
+		BIT(6, af.hi);
+		break;
+	case 0x78:
+		// BIT 7, B
+		BIT(7, bc.hi);
+		break;
+	case 0x79:
+		// BIT 7, C
+		BIT(7, bc.lo);
+		break;
+	case 0x7a:
+		// BIT 7, D
+		BIT(7, de.hi);
+		break;
+	case 0x7b:
+		// BIT 7, E
+		BIT(7, de.lo);
+		break;
+	case 0x7c:
+		// BIT 7, H
+		BIT(7, hl.hi);
+		break;
+	case 0x7d:
+		// BIT 7, L
+		BIT(7, hl.lo);
+		break;
+	case 0x7e:
+		// BIT 7, (HL)
+		BIT(7, mem->raw[hl.val]);
+		break;
+	case 0x7f:
+		// BIT 7, A
+		BIT(7, af.hi);
+		break;
 	}
 }
 
@@ -1621,4 +1877,10 @@ void LR35902::SRL(byte &b) {
 	if (b == 0) setZ();
 	resetN();
 	resetH();
+}
+
+void LR35902::BIT(byte b, byte &r) {
+	resetN();
+	setH();
+	if ((r&bit_vals[b]) == 0) setZ();
 }
