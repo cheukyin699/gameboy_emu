@@ -88,6 +88,8 @@ private:
 	void SRA(byte&);
 	void SRL(byte&);
 	void BIT(byte, byte&);
+	inline void SET(byte, byte&);
+	inline void RES(byte, byte&);
 
 	// This huge function mimics the execCurr() function, only that this is
 	// tailored for all commands prefixed with 0xcb.
