@@ -16,7 +16,8 @@ dis: $(DIS)
 all: emu dis
 
 clean:
-	rm obj/*
+	rm -f obj/*
+	rm -f $(EMU) $(DIS)
 
 obj/:
 	@echo "Creating object directory"
