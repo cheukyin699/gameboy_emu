@@ -1905,7 +1905,6 @@ int LR35902::execCurr() {
 		CP_A(bc.hi);
 		break;
 	case 0xc0:
-	{
 		// RET NZ
 		if (!getFlag(ZFLAG)) {
 			word_w w;
@@ -1915,7 +1914,6 @@ int LR35902::execCurr() {
 			sp += 2;
 		}
 		break;
-	}
 	case 0xc1:
 		// POP BC
 		bc.hi = mem->raw[sp+1];
@@ -1962,7 +1960,6 @@ int LR35902::execCurr() {
 		pc = 0x00;
 		break;
 	case 0xc8:
-	{
 		// RET Z
 		if (getFlag(ZFLAG)) {
 			word_w w;
@@ -1972,7 +1969,6 @@ int LR35902::execCurr() {
 			sp += 2;
 		}
 		break;
-	}
 	case 0xc9:
 	{
 		// RET
@@ -2035,7 +2031,6 @@ int LR35902::execCurr() {
 		pc = 0x08;
 		break;
 	case 0xd0:
-	{
 		// RET NC
 		if (!getFlag(CFLAG)) {
 			word_w w;
@@ -2045,7 +2040,6 @@ int LR35902::execCurr() {
 			sp += 2;
 		}
 		break;
-	}
 	case 0xd1:
 		// POP DE
 		de.hi = mem->raw[sp+1];
@@ -2088,7 +2082,6 @@ int LR35902::execCurr() {
 		pc = 0x10;
 		break;
 	case 0xd8:
-	{
 		// RET C
 		if (getFlag(CFLAG)) {
 			word_w w;
@@ -2098,7 +2091,6 @@ int LR35902::execCurr() {
 			sp += 2;
 		}
 		break;
-	}
 	case 0xda:
 		// JP C, nn
 		if (getFlag(CFLAG))
