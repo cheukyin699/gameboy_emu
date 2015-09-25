@@ -80,6 +80,9 @@ private:
 	inline void SET(byte, byte&);
 	inline void RES(byte, byte&);
 
+	// Other operations
+	void pushPCToStack();
+
 	// This huge function mimics the execCurr() function, only that this is
 	// tailored for all commands prefixed with 0xcb.
 	void execCB(byte);

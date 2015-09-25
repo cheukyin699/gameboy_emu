@@ -1958,6 +1958,7 @@ int LR35902::execCurr() {
 		break;
 	case 0xc7:
 		// RST 0x00
+		pushPCToStack();
 		pc = 0x00;
 		break;
 	case 0xc8:
@@ -2030,6 +2031,7 @@ int LR35902::execCurr() {
 		break;
 	case 0xcf:
 		// RST 0x08
+		pushPCToStack();
 		pc = 0x08;
 		break;
 	case 0xd0:
@@ -2082,6 +2084,7 @@ int LR35902::execCurr() {
 		break;
 	case 0xd7:
 		// RST 0x10
+		pushPCToStack();
 		pc = 0x10;
 		break;
 	case 0xd8:
@@ -2122,6 +2125,7 @@ int LR35902::execCurr() {
 		break;
 	case 0xdf:
 		// RST 0x18
+		pushPCToStack();
 		pc = 0x18;
 		break;
 	case 0xe0:
@@ -2150,6 +2154,7 @@ int LR35902::execCurr() {
 		break;
 	case 0xe7:
 		// RST 0x20
+		pushPCToStack();
 		pc = 0x20;
 		break;
 	case 0xe8:
@@ -2166,6 +2171,7 @@ int LR35902::execCurr() {
 		break;
 	case 0xef:
 		// RST 0x28
+		pushPCToStack();
 		pc = 0x28;
 		break;
 	case 0xf0:
@@ -2199,6 +2205,7 @@ int LR35902::execCurr() {
 		break;
 	case 0xf7:
 		// RST 0x30
+		pushPCToStack();
 		pc = 0x30;
 		break;
 	case 0xf8:
@@ -2230,6 +2237,7 @@ int LR35902::execCurr() {
 		break;
 	case 0xff:
 		// RST 0x38
+		pushPCToStack();
 		pc = 0x38;
 		break;
 	}
@@ -2403,4 +2411,15 @@ inline void LR35902::SET(byte b, byte &r) {
 
 inline void LR35902::RES(byte b, byte &r) {
 	r &= ~bit_vals[b];
+}
+
+void LR35902::pushPCToStack() {
+#ifndef BIG_ENDIAN
+	mem->raw[sp-1] = (pc&0xff00)>>8;	// High
+	mem->raw[sp-2] = pc&0xff;		// Low
+#else
+	mem->raw[sp-2] = (pc&0xff00)>>8;	// Low
+	mem->raw[sp-1] = pc&0xff;		// High
+#endif
+	sp -= 2;
 }
