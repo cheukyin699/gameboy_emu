@@ -9,6 +9,8 @@ DIS := GB_Disassembler
 EMUOBJ := obj/Main.o obj/Emulator.o obj/LR35902.o
 DISOBJ :=
 
+.PHONY: all clean
+
 emu: $(EMU)
 
 dis: $(DIS)
@@ -16,7 +18,8 @@ dis: $(DIS)
 all: emu dis
 
 clean:
-	rm obj/*
+	rm -f obj/*
+	rm -f $(EMU) $(DIS)
 
 obj/:
 	@echo "Creating object directory"
@@ -28,6 +31,8 @@ $(EMU): obj/ $(EMUOBJ)
 $(DIS): obj/ $(DISOBJ)
 	$(LD) $(LDFLAGS) $(DISOBJ) -o $@
 
+# Emulator
+
 obj/Main.o: src/Main.cpp src/Emulator.h
 	$(CXX) $(CXXFLAGS) $< -o $@
 
@@ -36,3 +41,6 @@ obj/Emulator.o: src/Emulator.cpp src/Emulator.h src/types.h src/gb_memory.h
 
 obj/LR35902.o: src/LR35902.cpp src/LR35902.h src/types.h src/gb_memory.h
 	$(CXX) $(CXXFLAGS) $< -o $@
+
+
+# Disassembler
