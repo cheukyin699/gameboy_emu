@@ -1262,7 +1262,7 @@ int LR35902::execCurr() {
 			byte lo = af.hi % 10;
 			byte t = (hi << 4) | lo;
 			if (t == af.hi) resetC();
-			else			setC();
+			else		setC();
 		}
 		break;
 	case 0x28:
@@ -1905,17 +1905,17 @@ int LR35902::execCurr() {
 		CP_A(bc.hi);
 		break;
 	case 0xc0:
+	{
 		// RET NZ
-		{
-			if (!getFlag(ZFLAG)) {
-				word_w w;
-				w.lo = mem->raw[sp];
-				w.hi = mem->raw[sp+1];
-				pc = w.val;
-				sp += 2;
-			}
-			break;
+		if (!getFlag(ZFLAG)) {
+			word_w w;
+			w.lo = mem->raw[sp];
+			w.hi = mem->raw[sp+1];
+			pc = w.val;
+			sp += 2;
 		}
+		break;
+	}
 	case 0xc1:
 		// POP BC
 		bc.hi = mem->raw[sp+1];
@@ -1932,20 +1932,20 @@ int LR35902::execCurr() {
 		pc = wargs[0];
 		break;
 	case 0xc4:
-		{
-			// CALL NZ, nn
-			if (!getFlag(ZFLAG)) {
-				word_w w;
-				w.val = pc;
-				mem->raw[sp-1] = w.hi;
-				mem->raw[sp-2] = w.lo;
-				sp -= 2;
+	{
+		// CALL NZ, nn
+		if (!getFlag(ZFLAG)) {
+			word_w w;
+			w.val = pc;
+			mem->raw[sp-1] = w.hi;
+			mem->raw[sp-2] = w.lo;
+			sp -= 2;
 
-				// Actually jump
-				pc = wargs[0];
-			}
-			break;
+			// Actually jump
+			pc = wargs[0];
 		}
+		break;
+	}
 	case 0xc5:
 		// PUSH BC
 		mem->raw[sp-1] = bc.hi;
@@ -1962,27 +1962,27 @@ int LR35902::execCurr() {
 		pc = 0x00;
 		break;
 	case 0xc8:
+	{
 		// RET Z
-		{
-			if (getFlag(ZFLAG)) {
-				word_w w;
-				w.lo = mem->raw[sp];
-				w.hi = mem->raw[sp+1];
-				pc = w.val;
-				sp += 2;
-			}
-			break;
-		}
-	case 0xc9:
-		// RET
-		{
+		if (getFlag(ZFLAG)) {
 			word_w w;
 			w.lo = mem->raw[sp];
 			w.hi = mem->raw[sp+1];
 			pc = w.val;
 			sp += 2;
-			break;
 		}
+		break;
+	}
+	case 0xc9:
+	{
+		// RET
+		word_w w;
+		w.lo = mem->raw[sp];
+		w.hi = mem->raw[sp+1];
+		pc = w.val;
+		sp += 2;
+		break;
+	}
 	case 0xca:
 		// JP Z, nn
 		if (getFlag(ZFLAG))
@@ -1995,26 +1995,9 @@ int LR35902::execCurr() {
 		execCB(args[0]);
 		break;
 	case 0xcc:
-		{
-			// CALL Z, nn
-			if (getFlag(ZFLAG)) {
-				word_w w;
-				w.val = pc;
-				mem->raw[sp-1] = w.hi;
-				mem->raw[sp-2] = w.lo;
-				sp -= 2;
-
-				// Actually jump
-				pc = wargs[0];
-			}
-			break;
-		}
-	case 0xcd:
-		{
-			// CALL nn
-			// Because the instruction size is already
-			// added, you can push it to stack. Push high
-			// then low.
+	{
+		// CALL Z, nn
+		if (getFlag(ZFLAG)) {
 			word_w w;
 			w.val = pc;
 			mem->raw[sp-1] = w.hi;
@@ -2023,8 +2006,25 @@ int LR35902::execCurr() {
 
 			// Actually jump
 			pc = wargs[0];
-			break;
 		}
+		break;
+	}
+	case 0xcd:
+	{
+		// CALL nn
+		// Because the instruction size is already
+		// added, you can push it to stack. Push high
+		// then low.
+		word_w w;
+		w.val = pc;
+		mem->raw[sp-1] = w.hi;
+		mem->raw[sp-2] = w.lo;
+		sp -= 2;
+
+		// Actually jump
+		pc = wargs[0];
+		break;
+	}
 	case 0xce:
 		// ADC A, n
 		ADD_A(args[0]+((af.lo&CFLAG) == 0? 0:1));
@@ -2035,17 +2035,17 @@ int LR35902::execCurr() {
 		pc = 0x08;
 		break;
 	case 0xd0:
+	{
 		// RET NC
-		{
-			if (!getFlag(CFLAG)) {
-				word_w w;
-				w.lo = mem->raw[sp];
-				w.hi = mem->raw[sp+1];
-				pc = w.val;
-				sp += 2;
-			}
-			break;
+		if (!getFlag(CFLAG)) {
+			word_w w;
+			w.lo = mem->raw[sp];
+			w.hi = mem->raw[sp+1];
+			pc = w.val;
+			sp += 2;
 		}
+		break;
+	}
 	case 0xd1:
 		// POP DE
 		de.hi = mem->raw[sp+1];
@@ -2058,20 +2058,20 @@ int LR35902::execCurr() {
 			pc = wargs[0];
 		break;
 	case 0xd4:
-		{
-			// CALL NC, nn
-			if (!getFlag(CFLAG)) {
-				word_w w;
-				w.val = pc;
-				mem->raw[sp-1] = w.hi;
-				mem->raw[sp-2] = w.lo;
-				sp -= 2;
+	{
+		// CALL NC, nn
+		if (!getFlag(CFLAG)) {
+			word_w w;
+			w.val = pc;
+			mem->raw[sp-1] = w.hi;
+			mem->raw[sp-2] = w.lo;
+			sp -= 2;
 
-				// Actually jump
-				pc = wargs[0];
-			}
-			break;
+			// Actually jump
+			pc = wargs[0];
 		}
+		break;
+	}
 	case 0xd5:
 		// PUSH DE
 		mem->raw[sp-1] = de.hi;
@@ -2088,37 +2088,37 @@ int LR35902::execCurr() {
 		pc = 0x10;
 		break;
 	case 0xd8:
+	{
 		// RET C
-		{
-			if (getFlag(CFLAG)) {
-				word_w w;
-				w.lo = mem->raw[sp];
-				w.hi = mem->raw[sp+1];
-				pc = w.val;
-				sp += 2;
-			}
-			break;
+		if (getFlag(CFLAG)) {
+			word_w w;
+			w.lo = mem->raw[sp];
+			w.hi = mem->raw[sp+1];
+			pc = w.val;
+			sp += 2;
 		}
+		break;
+	}
 	case 0xda:
 		// JP C, nn
 		if (getFlag(CFLAG))
 			pc = wargs[0];
 		break;
 	case 0xdc:
-		{
-			// CALL C, nn
-			if (getFlag(CFLAG)) {
-				word_w w;
-				w.val = pc;
-				mem->raw[sp-1] = w.hi;
-				mem->raw[sp-2] = w.lo;
-				sp -= 2;
+	{
+		// CALL C, nn
+		if (getFlag(CFLAG)) {
+			word_w w;
+			w.val = pc;
+			mem->raw[sp-1] = w.hi;
+			mem->raw[sp-2] = w.lo;
+			sp -= 2;
 
-				// Actually jump
-				pc = wargs[0];
-			}
-			break;
+			// Actually jump
+			pc = wargs[0];
 		}
+		break;
+	}
 	case 0xde:
 		// SBC A, n
 		SUB_A(args[0]+((af.lo&CFLAG) == 0? 0:1));
