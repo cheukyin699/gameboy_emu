@@ -25,21 +25,10 @@
  * HFLAG - The half carry flag
  * CFLAG - The carry flag
  */
-#define ZFLAG   0x80
-#define NFLAG   0x40
-#define HFLAG   0x20
-#define CFLAG   0x10
-
-union word_w {
-	word val;
-	struct {
-		#ifndef BIG_ENDIAN
-		byte hi, lo;		// Little endian
-		#else
-		byte lo, hi;		// Big endian
-		#endif
-	};
-};
+#define ZFLAG	0x80
+#define NFLAG	0x40
+#define HFLAG	0x20
+#define CFLAG	0x10
 
 typedef word_w Register;
 

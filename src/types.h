@@ -21,7 +21,7 @@
 typedef unsigned char byte;
 typedef unsigned short word;
 
-union word_t {
+union word_w {
 	word val;
 	struct {
 		#ifndef BIG_ENDIAN
