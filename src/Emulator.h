@@ -16,17 +16,26 @@
 #ifndef EMULATOR_H_
 #define EMULATOR_H_
 
+#include <string>
+
 #include "LR35902.h"
 #include "gb_memory.h"
 #include "types.h"
+
+using namespace std;
 
 const int MaxCycles = 69905;
 
 class Emulator {
 private:
 	byte cartridge[0x200000];
+	byte cartridge_t;
+	byte rom_size;
+	byte ram_size;
 	LR35902 *cpu;
 	Memory *mem;
+
+	byte getROMSize(byte);
 
 public:
 	Emulator();
@@ -38,6 +47,10 @@ public:
 	bool initRom(const char*);
 
 	void update();
+
+	void dumpInfo();
+
+	string cartridgeToString();
 };
 
 #endif

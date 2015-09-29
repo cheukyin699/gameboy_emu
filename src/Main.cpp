@@ -21,6 +21,7 @@ int main(int argc, char *argv[]) {
 
 	Emulator *emu = new Emulator();
 	emu->initRom(argv[1]);
+	emu->dumpInfo();
 
 	while (true) {
 		emu->update();
