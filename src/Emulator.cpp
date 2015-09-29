@@ -23,6 +23,7 @@
 using namespace std;
 
 Emulator::Emulator() {
+	title = "";
 	mem = new Memory;
 	cpu = new LR35902(mem);
 }
@@ -55,6 +56,9 @@ bool Emulator::initRom(const char *fn) {
 	default: ram_size = 0; break;
 	}
 
+	// Find the title of the ROM
+	readTitle();
+
 	return true;
 }
 
@@ -81,7 +85,7 @@ byte Emulator::getROMSize(byte b) {
 }
 
 void Emulator::dumpInfo() {
-	cout << "Information for current ROM:" << endl
+	cout << "Information for current ROM: `" << title << "'" << endl
 		<< "Cartridge type: " << cartridgeToString() << endl
 		<< "ROM size: " << rom_size << " banks" << endl
 		<< "RAM size: " << ram_size << " banks" << endl;
@@ -116,5 +120,12 @@ string Emulator::cartridgeToString() {
 	case 0xfe: return "Hudson HuC-3";
 	case 0xff: return "Hudson HuC-1";
 	default: return "Unknown";
+	}
+}
+
+void Emulator::readTitle() {
+	// Reads from 0x134-0x142
+	for (unsigned off = 0; mem->raw[0x134+off] != 0 && 0x134+off <= 0x142; off++) {
+		title += char(mem->raw[0x134+off]);
 	}
 }

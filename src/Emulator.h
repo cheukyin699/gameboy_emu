@@ -32,10 +32,12 @@ private:
 	byte cartridge_t;
 	byte rom_size;
 	byte ram_size;
+	string title;
 	LR35902 *cpu;
 	Memory *mem;
 
 	byte getROMSize(byte);
+	void readTitle();
 
 public:
 	Emulator();
