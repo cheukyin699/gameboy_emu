@@ -33,6 +33,10 @@ private:
 	LR35902 *cpu;
 	Memory *mem;
 
+	unsigned getROMSize(byte);
+	void readTitle();
+
+public:
 	// Information about the cartridge
 	byte cartridge_t;
 	unsigned rom_size;		// Number of banks
@@ -40,10 +44,6 @@ private:
 	bool dest_code;			// Japanese or not
 	bool is_gb;			// GB or SGB
 
-	unsigned getROMSize(byte);
-	void readTitle();
-
-public:
 	Emulator();
 
 	/* Initializes the ROM memory from file(name).
