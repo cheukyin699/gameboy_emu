@@ -59,6 +59,12 @@ bool Emulator::initRom(const char *fn) {
 	// Find the title of the ROM
 	readTitle();
 
+	// Get destination code
+	dest_code = mem->raw[0x14a];
+
+	// SGB or GB?
+	is_gb = mem->raw[0x146] == 0x00;
+
 	return true;
 }
 
@@ -71,7 +77,7 @@ void Emulator::update() {
 	}
 }
 
-byte Emulator::getROMSize(byte b) {
+unsigned Emulator::getROMSize(byte b) {
 	if (b <= 6) {
 		return pow(2, b+1);
 	} else {
@@ -88,7 +94,9 @@ void Emulator::dumpInfo() {
 	cout << "Information for current ROM: `" << title << "'" << endl
 		<< "Cartridge type: " << cartridgeToString() << endl
 		<< "ROM size: " << rom_size << " banks" << endl
-		<< "RAM size: " << ram_size << " banks" << endl;
+		<< "RAM size: " << ram_size << " banks" << endl
+		<< "Destination code: " << (dest_code? "Non-Japanese": "Japanese") << endl
+		<< "For GB? " << (is_gb? "yes": "no") << endl;
 }
 
 string Emulator::cartridgeToString() {

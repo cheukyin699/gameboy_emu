@@ -29,14 +29,18 @@ const int MaxCycles = 69905;
 class Emulator {
 private:
 	byte cartridge[0x200000];
-	byte cartridge_t;
-	byte rom_size;
-	byte ram_size;
 	string title;
 	LR35902 *cpu;
 	Memory *mem;
 
-	byte getROMSize(byte);
+	// Information about the cartridge
+	byte cartridge_t;
+	unsigned rom_size;		// Number of banks
+	unsigned ram_size;		// Number of banks
+	bool dest_code;			// Japanese or not
+	bool is_gb;			// GB or SGB
+
+	unsigned getROMSize(byte);
 	void readTitle();
 
 public:
