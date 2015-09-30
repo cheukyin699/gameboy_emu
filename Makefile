@@ -6,7 +6,7 @@ LDFLAGS := -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio -g
 EMU := GB_Emulator
 DIS := GB_Disassembler
 
-EMUOBJ := obj/Main.o obj/Emulator.o obj/LR35902.o
+EMUOBJ := obj/Main.o obj/Emulator.o obj/LR35902.o obj/gb_memory.o
 DISOBJ :=
 
 .PHONY: all clean
@@ -42,5 +42,7 @@ obj/Emulator.o: src/Emulator.cpp src/Emulator.h src/types.h src/gb_memory.h
 obj/LR35902.o: src/LR35902.cpp src/LR35902.h src/types.h src/gb_memory.h
 	$(CXX) $(CXXFLAGS) $< -o $@
 
+obj/gb_memory.o: src/gb_memory.cpp src/gb_memory.h
+	$(CXX) $(CXXFLAGS) $< -o $@
 
 # Disassembler

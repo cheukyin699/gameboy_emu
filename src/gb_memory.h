@@ -35,6 +35,8 @@ union Memory {
 		byte intram2[0x7f];		// More internal RAM
 		byte intenable;			// Interrupt enable register
 	};
+
+	void write(word, byte);			// Restrict writing
 };
 
 #endif
