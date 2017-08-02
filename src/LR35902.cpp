@@ -2215,7 +2215,7 @@ int LR35902::execCurr() {
     case 0xf3:
         // DI
         // Disable interrupts
-        // TODO
+        mem->intenable = 0x00;
         break;
     case 0xf5:
         // PUSH AF
@@ -2257,7 +2257,7 @@ int LR35902::execCurr() {
     case 0xfb:
         // EI
         // Enable interrupts
-        // TODO
+        mem->intenable = 0b11111;
         break;
     case 0xff:
         // RST 0x38

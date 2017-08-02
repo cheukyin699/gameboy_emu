@@ -41,19 +41,19 @@ private:
     Register bc;        // B and C
     Register de;        // D and E
     Register hl;        // H and L
-    word sp;        // Stack pointer that grows downwards in memory
-    word pc;        // Program counter (instruction pointer)
+    word sp;            // Stack pointer that grows downwards in memory
+    word pc;            // Program counter (instruction pointer)
 
     // Some flag setters and resetters
-    inline void setZ() {af.lo |= ZFLAG;}    // Sets the zero flag
-    inline void setN() {af.lo |= NFLAG;}    // Sets the subtract flag
-    inline void setH() {af.lo |= HFLAG;}    // Sets the half carry flag
-    inline void setC() {af.lo |= CFLAG;}    // Sets the carry flag
-    inline void resetZ() {af.lo &= ~ZFLAG;} // Resets the zero flag
-    inline void resetN() {af.lo &= ~NFLAG;} // Resets the subtract flag
-    inline void resetH() {af.lo &= ~HFLAG;} // Resets the half carry flag
-    inline void resetC() {af.lo &= ~CFLAG;} // Resets the carry flag
-    inline bool getFlag(byte mask) {return ((af.lo & mask) != 0? true:false);}
+    inline void setZ()   {af.lo |=  ZFLAG;}     // Sets the zero flag
+    inline void setN()   {af.lo |=  NFLAG;}     // Sets the subtract flag
+    inline void setH()   {af.lo |=  HFLAG;}     // Sets the half carry flag
+    inline void setC()   {af.lo |=  CFLAG;}     // Sets the carry flag
+    inline void resetZ() {af.lo &= ~ZFLAG;}     // Resets the zero flag
+    inline void resetN() {af.lo &= ~NFLAG;}     // Resets the subtract flag
+    inline void resetH() {af.lo &= ~HFLAG;}     // Resets the half carry flag
+    inline void resetC() {af.lo &= ~CFLAG;}     // Resets the carry flag
+    inline bool getFlag(byte mask) {return (af.lo & mask) != 0;}
 
     // Some complex operations that need to
     // be performed quite a lot of times

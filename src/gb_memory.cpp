@@ -1,8 +1,5 @@
 #include "gb_memory.h"
 
-Memory::~Memory() {
-}
-
 void Memory::write(word addr, byte d) {
     if (addr < 0x8000) {
         /* Don't write to ROM */
