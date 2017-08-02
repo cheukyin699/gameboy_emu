@@ -22,20 +22,20 @@ typedef unsigned char byte;
 typedef unsigned short word;
 
 union word_w {
-	word val;
-	struct {
-		#ifndef BIG_ENDIAN
-		byte hi, lo;		// Little endian
-		#else
-		byte lo, hi;		// Big endian
-		#endif
-	};
+    word val;
+    struct {
+        #ifndef BIG_ENDIAN
+        byte hi, lo;        // Little endian
+        #else
+        byte lo, hi;        // Big endian
+        #endif
+    };
 };
 
 // Bit operations find this map useful
 static unsigned bit_vals[] = {
-	0x01, 0x02, 0x04, 0x08,
-	0x10, 0x20, 0x40, 0x80
+    0x01, 0x02, 0x04, 0x08,
+    0x10, 0x20, 0x40, 0x80
 };
 
 #endif

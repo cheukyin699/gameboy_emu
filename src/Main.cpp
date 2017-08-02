@@ -21,23 +21,23 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-	if (argc <= 1) return -1;
+    if (argc <= 1) return -1;
 
 
-	Emulator *emu = new Emulator();
-	emu->initRom(argv[1]);
-	emu->dumpInfo();
+    Emulator *emu = new Emulator();
+    emu->initRom(argv[1]);
+    emu->dumpInfo();
 
-	// Check if I can run the cartridge
-	// (this emulator does not currently support memory bank swapping)
-	if (emu->cartridge_t != 0 || emu->rom_size != 2 || emu->ram_size > 1) {
-		cout << "Sorry, this emulator does not support memory bank swapping." << endl;
-		return 0;
-	}
+    // Check if I can run the cartridge
+    // (this emulator does not currently support memory bank swapping)
+    if (emu->cartridge_t != 0 || emu->rom_size != 2 || emu->ram_size > 1) {
+        cout << "Sorry, this emulator does not support memory bank swapping." << endl;
+        return 0;
+    }
 
-	while (true) {
-		emu->update();
-	}
+    while (true) {
+        emu->update();
+    }
 
-	return 0;
+    return 0;
 }

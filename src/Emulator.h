@@ -28,35 +28,35 @@ const int MaxCycles = 69905;
 
 class Emulator {
 private:
-	byte cartridge[0x200000];
-	string title;
-	LR35902 *cpu;
-	Memory *mem;
+    byte cartridge[0x200000];
+    string title;
+    LR35902 *cpu;
+    Memory *mem;
 
-	unsigned getROMSize(byte);
-	void readTitle();
+    unsigned getROMSize(byte);
+    void readTitle();
 
 public:
-	// Information about the cartridge
-	byte cartridge_t;
-	unsigned rom_size;		// Number of banks
-	unsigned ram_size;		// Number of banks
-	bool dest_code;			// Japanese or not
-	bool is_gb;			// GB or SGB
+    // Information about the cartridge
+    byte cartridge_t;
+    unsigned rom_size;     // Number of banks
+    unsigned ram_size;     // Number of banks
+    bool dest_code;        // Japanese or not
+    bool is_gb;            // GB or SGB
 
-	Emulator();
+    Emulator();
 
-	/* Initializes the ROM memory from file(name).
-	 * If it cannot open the file, it returns false.
-	 * Otherwise, it returns true.
-	 */
-	bool initRom(const char*);
+    /* Initializes the ROM memory from file(name).
+     * If it cannot open the file, it returns false.
+     * Otherwise, it returns true.
+     */
+    bool initRom(const char*);
 
-	void update();
+    void update();
 
-	void dumpInfo();
+    void dumpInfo();
 
-	string cartridgeToString();
+    string cartridgeToString();
 };
 
 #endif
