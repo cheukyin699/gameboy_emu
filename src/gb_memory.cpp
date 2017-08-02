@@ -1,12 +1,19 @@
 #include "gb_memory.h"
 
+Memory::~Memory() {
+}
+
 void Memory::write(word addr, byte d) {
     if (addr < 0x8000) {
         /* Don't write to ROM */
-    } else if ((addr >= 0xe000) && (addr < 0xfe00)) {
-        /* Writing to echo RAM with recursion */
+    } else if ((addr >= 0xc000) && (addr < 0xe000)) {
+        /* Writing to echo RAM */
         raw[addr] = d;
-        write(addr-0x2000, d);
+        raw[addr+0x2000] = d;
+    } else if ((addr >= 0xe000) && (addr < 0xfe00)) {
+        /* Writing to echo RAM */
+        raw[addr] = d;
+        raw[addr-0x2000] = d;
     } else if ((addr >= 0xfea0) && (addr < 0xfeff)) {
         /* This is a restricted area */
     } else {

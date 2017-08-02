@@ -36,6 +36,7 @@ union Memory {
         byte intenable;             // Interrupt enable register
     };
 
+    ~Memory();
     void write(word, byte);         // Restrict writing
 };
 

@@ -25,8 +25,13 @@ int main(int argc, char *argv[]) {
 
 
     Emulator *emu = new Emulator();
-    emu->initRom(argv[1]);
-    emu->dumpInfo();
+    try {
+        bool successful = emu->initRom(argv[1]);
+        emu->dumpInfo();
+    } catch (exception ex) {
+        cerr << ex.what() << endl;
+        return 0;
+    }
 
     // Check if I can run the cartridge
     // (this emulator does not currently support memory bank swapping)
@@ -35,9 +40,11 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    while (true) {
-        emu->update();
-    }
+//  while (true) {
+//      emu->update();
+//  }
+
+    delete emu;
 
     return 0;
 }

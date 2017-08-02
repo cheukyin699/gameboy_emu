@@ -25,6 +25,7 @@
 using namespace std;
 
 const int MaxCycles = 69905;
+const unsigned RAM_SIZE_TABLE[] = {0, 1, 1, 4, 16};
 
 class Emulator {
 private:
@@ -45,6 +46,7 @@ public:
     bool is_gb;            // GB or SGB
 
     Emulator();
+    ~Emulator();
 
     /* Initializes the ROM memory from file(name).
      * If it cannot open the file, it returns false.
@@ -55,6 +57,18 @@ public:
     void update();
 
     void dumpInfo();
+
+    /* Uses 2 checks (the fact that the cartridge starting 0x104 to 0x133 must
+     * match exactly with a table in the internal rom, and the checksum). If the
+     * game successfully makes it through these 2 checks, return true.
+     * Otherwise, return false.
+     */
+    bool checkRom();
+
+    /* Returns true if the checksum performed on the cartridge is valid. Returns
+     * false otherwise.
+     */
+    bool checksum();
 
     string cartridgeToString();
 };

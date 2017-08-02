@@ -16,6 +16,7 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <stdexcept>
 #include <iostream>
 
 #include "Emulator.h"
@@ -26,6 +27,13 @@ Emulator::Emulator() {
     title = "";
     mem = new Memory;
     cpu = new LR35902(mem);
+}
+
+Emulator::~Emulator() {
+    // Delete the CPU first, and then delete the memory.
+    // Should be somewhat important.
+    delete cpu;
+    delete mem;
 }
 
 bool Emulator::initRom(const char *fn) {
@@ -47,14 +55,7 @@ bool Emulator::initRom(const char *fn) {
     rom_size = getROMSize(mem->raw[0x148]);
 
     // Find the size of the RAM
-    switch (mem->raw[0x149]) {
-    case 0: ram_size = 0; break;
-    case 1: ram_size = 1; break;
-    case 2: ram_size = 1; break;
-    case 3: ram_size = 4; break;
-    case 4: ram_size = 16; break;
-    default: ram_size = 0; break;
-    }
+    ram_size = RAM_SIZE_TABLE[mem->raw[0x149]];
 
     // Find the title of the ROM
     readTitle();
@@ -64,6 +65,10 @@ bool Emulator::initRom(const char *fn) {
 
     // SGB or GB?
     is_gb = mem->raw[0x146] == 0x00;
+
+    if (!checkRom()) {
+        throw new runtime_error("ROM checksum failed");
+    }
 
     return true;
 }
@@ -129,6 +134,27 @@ string Emulator::cartridgeToString() {
     case 0xff: return "Hudson HuC-1";
     default: return "Unknown";
     }
+}
+
+bool Emulator::checkRom() {
+    // Check Nintendo graphic
+    for (unsigned i = 0x104; i <= 0x133; ++i) {
+        if (cartridge[i] != mem->raw[i]) {
+            return false;
+        }
+    }
+
+    // Do a checksum afterwards
+    return checksum();
+}
+
+bool Emulator::checksum() {
+    // We overload this byte on purpose
+    byte sum = 25;
+    for (unsigned i = 0x134; i <= 0x14d; ++i) {
+        sum += cartridge[i];
+    }
+    return sum == 0x00;
 }
 
 void Emulator::readTitle() {
